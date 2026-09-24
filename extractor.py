@@ -313,32 +313,7 @@ def _extract_free_text_lines(page, table_bboxes):
                 "x1": x1
             })
 
-    # Step 3: Merge consecutive wrapped lines into a single block/paragraph
-    # This prevents multi-line text (e.g., job titles/catchphrases) from splitting into separate columns like col 1 & col 29
-    merged_lines = []
-    i = 0
-    while i < len(line_objs):
-        curr = dict(line_objs[i])
-        while i + 1 < len(line_objs):
-            nxt = line_objs[i + 1]
-            gap_y = nxt["top"] - curr["bottom"]
-            # Close vertical gap indicating a wrapped line in the same paragraph/title
-            is_close_vertically = (-2 <= gap_y <= 20)
-            horiz_overlap = not (nxt["x1"] < curr["x0"] - 30 or nxt["x0"] > curr["x1"] + 30)
-
-            if is_close_vertically and horiz_overlap:
-                curr["text"] = curr["text"] + "\n" + nxt["text"]
-                curr["bottom"] = max(curr["bottom"], nxt["bottom"])
-                curr["x0"] = min(curr["x0"], nxt["x0"])
-                curr["x1"] = max(curr["x1"], nxt["x1"])
-                curr["bbox"] = (curr["x0"], curr["top"], curr["x1"], curr["bottom"])
-                i += 1
-            else:
-                break
-        merged_lines.append(curr)
-        i += 1
-
-    return merged_lines
+    return line_objs
 
 def extract_pairs_from_pdf(pdf_path, image_out_dir=None):
     if image_out_dir is None:
