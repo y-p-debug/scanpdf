@@ -1,0 +1,6 @@
+{
+  "name": "PDF Form & Handwriting Scanner",
+  "description": "Quét biểu mẫu PDF theo màu sắc khung tiêu đề và nhận diện chữ viết tay chính xác, xem trước kết quả trực quan và xuất Excel nhiều tab.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
